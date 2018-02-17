@@ -46,3 +46,77 @@ before(app) {
 ```
 
 使用`localhost:8080/api/seller`查看json数据。
+
+## 安装使用stylus-loader
+
+```
+npm i stylus --save
+npm i stylus-loader --save
+```
+
+## 页面布局
+
+分为头部和内容区域，头部使用组件：
+```bash
+<template>
+  <div id="app">
+    <v-header></v-header>
+  </div>
+</template>
+
+<script>
+import header from './components/header/header';
+export default {
+  components: {
+    'v-header': header
+  }
+};
+</script>
+```
+
+内容区域使用`flex`布局三等分，style部分如下：
+```css
+#app
+  .tab
+    display flex
+    width 100%
+    height 40px
+    line-height 40px
+    .tab-item
+      flex 1
+      text-align center
+```
+
+使用`vue-router`创建单页应用：
+```html
+<div class="tab">
+  <div class="tab-item active">
+    <router-link to="/goods">商品</router-link>
+  </div>
+  <div class="tab-item">
+    <router-link to="/ratings">评论</router-link>
+  </div>
+  <div class="tab-item">
+    <router-link to="/seller">商家</router-link>
+  </div>
+</div>
+<router-view></router-view>
+```
+
+在`main.js`引入：
+```js
+// import goods from '../src/components/goods/goods';
+// 为了让自己写的更少，在webpack.base.conf.js中加入下面这行代码
+'components': resolve(__dirname, '../src/components')
+
+// 在main.js中可以简写为：
+import goods from 'components/goods/goods';
+```
+
+## 设置被点击文字高亮
+
+我们知道，点击的router-link，vue会自动给它增加`class: router-link-active`，为了写的更少，我们在`main.js`中配置：
+```js
+linkActiveClass: 'active'
+```
+这样我们在写样式时，直接用`.active`就可以了！
