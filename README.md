@@ -120,3 +120,7 @@ import goods from 'components/goods/goods';
 linkActiveClass: 'active'
 ```
 这样我们在写样式时，直接用`.active`就可以了！
+
+## Sticky footers
+
+概括如下:如果页面内容不够长的时候，页脚块粘贴在视窗底部；如果内容足够长时，页脚块会被内容向下推送。具体介绍看这篇文章：[https://www.w3cplus.com/css3/css-secrets/sticky-footers.html](https://www.w3cplus.com/css3/css-secrets/sticky-footers.html)
