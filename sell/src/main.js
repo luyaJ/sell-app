@@ -16,6 +16,10 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     {
+      path: '/',
+      component: goods
+    },
+    {
       path: '/goods',
       component: goods
     },

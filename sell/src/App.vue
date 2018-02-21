@@ -18,6 +18,7 @@
 
 <script>
 import header from './components/header/header';
+import goods from './components/goods/goods';
 
 const ERR_OK = 0;
 
@@ -32,12 +33,12 @@ export default {
       response = response.body;
       if (response.errno === ERR_OK) {
         this.seller = response.data;
-        console.log(this.seller);
       }
     });
   },
   components: {
-    'v-header': header
+    'v-header': header,
+    goods: goods
   }
 };
 </script>
