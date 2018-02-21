@@ -124,3 +124,19 @@ linkActiveClass: 'active'
 ## Sticky footers
 
 概括如下:如果页面内容不够长的时候，页脚块粘贴在视窗底部；如果内容足够长时，页脚块会被内容向下推送。具体介绍看这篇文章：[https://www.w3cplus.com/css3/css-secrets/sticky-footers.html](https://www.w3cplus.com/css3/css-secrets/sticky-footers.html)
+
+## better-scroll
+
+[better-scroll](https://github.com/ustbhuangyi/better-scroll) is a plugin which is aimed at solving scrolling circumstances on the mobile side (PC supported already). 
+
+* 先安装：`npm i better-scroll --save`
+* 引入：`import BScroll from 'better-scroll';`
+* 在`menu-wrapper`中加入`ref="menuWrapper"`
+```js
+methods: {
+  _initScroll() {
+    this.menuScroll = new BScroll(this.$refs.menuWrapper, {});
+    this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {});
+  }
+}
+```
