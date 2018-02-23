@@ -22,8 +22,7 @@
                 <h2 class="name">{{food.name}}</h2>
                 <p class="desc">{{food.description}}</p>
                 <div class="extra">
-                  <span class="count">月售{{food.sellCount}}份</span>
-                  <span>好评率{{food.rating}}%</span>
+                  <span class="count">月售{{food.sellCount}}份</span><span>好评率{{food.rating}}%</span>
                 </div>
                 <div class="price">
                   <span class="now-price">￥{{food.price}}</span>
@@ -35,11 +34,13 @@
         </li>
       </ul>
     </div>
+    <shop-cart :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shop-cart>
   </div>
 </template>
 
 <script>
 import BScroll from 'better-scroll';
+import shopCart from '../shopCart/shopCart';
 
 const ERR_OK = 0;
 export default {
@@ -47,6 +48,9 @@ export default {
     seller: {
       type: Object
     }
+  },
+  components: {
+    shopCart
   },
   data() {
     return {
@@ -108,7 +112,7 @@ export default {
       }
       let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
       let el = foodList[index];
-      this.foodsScroll.scrollToElement(el ,300);
+      this.foodsScroll.scrollToElement(el, 300);
     }
   }
 };
