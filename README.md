@@ -140,3 +140,27 @@ methods: {
   }
 }
 ```
+
+## vue-migration-helper
+
+CLI tool to aid in migration from Vue 1.x to 2.0. It scans files for Vue-specific code and provides detailed warnings when deprecated patterns are found. It cannot reliably catch every deprecation, but should get you 80% of the way there.
+
+[vue-migration-helper](https://github.com/vuejs/vue-migration-helper)
+
+这个工具可以很好的解决Vue 1.x to 2.0之间的问题，下面是我遇到的问题：
+```js
+1. Replace "vue-router": "^3.0.1" with "vue-router": "^2.0.0", then run: npm install
+  Line 20: package.json
+  Reason: If you are using pre-2.0
+Vue Router through NPM, you have to update it in your package.json file
+  More info: http://vuejs.org/guide/migration-vue-router.html#
+
+2. Replace this.$dispatch('cart.add', event.target) to use a global event bus or vuex (see link below for implementation details)
+  Line 34: src/components/cartcontrol/cartcontrol.vue
+  Reason: $dispatch and $broadcast
+have been removed because the pattern doesn't scale well
+  More info: http://vuejs.org/guide/migration.html#dispatch-and-broadcast
+```
+
+我们可以看到，它很好的告诉了我们解决方案。
+
