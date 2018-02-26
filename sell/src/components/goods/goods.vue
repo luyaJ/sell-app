@@ -139,7 +139,11 @@ export default {
       this.$refs.shopcart.drop(target);
     },
     selectFood(food, event) {
+      if (!event._constructed) {
+        return;
+      }
       this.selectedFood = food;
+      this.$refs.food.show(); // 取得子组件的show方法
     }
   }
 };
