@@ -11,6 +11,7 @@
     </div>
   </div>
 </template>
+
 <script>
 const POSITIVE = 0;
 const NEGATIVE = 1;
@@ -45,7 +46,7 @@ export default {
   },
   data() {
     return {
-      image: true
+      image: false
     };
   },
   methods: {
@@ -53,18 +54,16 @@ export default {
       if (!event._constructed) {
         return;
       }
-      this.selectType = type;
       // 通知父组件
-      this.$emit('ratingtype.select', type);
+      this.$emit('select', type);
     },
     toggleContent(event) {
       if (!event._constructed) {
         return;
       }
-      // toggle使用这种方法！！！记住
-      this.onlyContent = !this.onlyContent;
+      // 使用这种方法！！！记住
       this.image = !this.image;
-      this.$emit('content.toggle', this.onlyContent);
+      this.$emit('toggle');
     }
   },
   computed: {

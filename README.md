@@ -209,3 +209,21 @@ toggleContent() {
 ```
 
 这样就实现了父子组件间的通信。
+
+## formatDate组件
+
+```html
+<div class="time">{{rating.rateTime | formatDate}}</div>
+
+filters: {
+  formatDate(time) {
+    let date = new Date(time);
+    return formatDate(date, 'yyyy-MM-DD hh:mm');
+  }
+}
+```
+
+引入:加入花括号的原因是使用的不是`export default`
+```js
+import {formatDate} from '../../common/js/date';
+```
