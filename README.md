@@ -164,3 +164,48 @@ have been removed because the pattern doesn't scale well
 
 我们可以看到，它很好的告诉了我们解决方案。
 
+## 父子组件间的通信
+
+在子组件`ratingselect.vue`中使用了`@click="select(2, $event)"`和`@click="toggleContent"`这两个点击事件。使用`vue.$emit`通知父组件。
+
+```js
+methods: {
+  select(type, event) {
+    if (!event._constructed) {
+      return;
+    }
+    // 通知父组件
+    this.$emit('select', type);
+  },
+  toggleContent(event) {
+    if (!event._constructed) {
+      return;
+    }
+    this.image = !this.image;
+    this.$emit('toggle');
+  }
+},
+```
+
+在父组件中我们使用这样的方式绑定：
+```html
+<ratingselect @select="selectRating" @toggle="toggleContent"></ratingselect>
+```
+
+```js
+selectRating(type) {
+  this.selectType = type;
+  this.$nextTick(() => {
+    this.scroll.refresh();
+  });
+},
+toggleContent() {
+  this.onlyContent = !this.onlyContent;
+  this.image = !this.image;
+  this.$nextTick(() => {
+    this.scroll.refresh();
+  });
+}
+```
+
+这样就实现了父子组件间的通信。
