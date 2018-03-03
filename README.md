@@ -236,3 +236,12 @@ import {formatDate} from '../../common/js/date';
     <router-view :seller="seller"></router-view>
 </keep-alive>
 ```
+
+## 使用webpack打包vue项目
+
+在`package.json`中，我们有
+```js
+"build": "node build/build.js"
+```
+
+我们在终端运行`npm run build`，运行完毕后，我们可以在目录中看到多了一个`dist`文件夹。这就是我们打包好的。
