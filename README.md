@@ -227,3 +227,12 @@ filters: {
 ```js
 import {formatDate} from '../../common/js/date';
 ```
+
+## keep-alive
+
+主要用于保留组件状态或避免重新渲染。
+```html
+<keep-alive>
+    <router-view :seller="seller"></router-view>
+</keep-alive>
+```
