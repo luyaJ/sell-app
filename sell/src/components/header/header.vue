@@ -1,9 +1,8 @@
 <template>
   <div class="header">
-    <!-- 内容部分 -->
     <div class="content-wrapper">
       <div class="avatar">
-        <img :src="seller.avatar" width="64" height="64">
+        <img :src="seller.avatar" alt="" width="64" height="64">
       </div>
       <div class="content">
         <div class="title">
@@ -11,68 +10,73 @@
           <span class="name">{{seller.name}}</span>
         </div>
         <div class="description">
-          {{seller.description}} / {{seller.deliveryTime}}分钟
+          {{seller.description}} / {{seller.deliveryTime}}分钟送达
         </div>
-        <div v-if="seller.supports" class="supports">
-          <span class="icon" :class="mapClass[seller.supports[0].type]"></span>
+        <div class="supports" v-if="seller.supports">
+          <span class="icon" :class="classMap[seller.supports[0].type]"></span>
           <span class="text">{{seller.supports[0].description}}</span>
         </div>
       </div>
-      <div v-if="seller.supports" class="support-count" @click="detailShow">
+      <div class="support-count" v-if="seller.supports" @click="showDetail">
         <span class="count">{{seller.supports.length}}个</span>
-        <i class="iconfont">&#xe613;</i>
+        <i class="icon-keyboard_arrow_right"></i>
       </div>
     </div>
-    <!-- 公告部分 -->
-    <div class="bulletin-wrapper" @click="detailShow">
-      <span class="bulletin-icon"></span><span class="bulletin-text">{{seller.bulletin}}</span>
-      <i class="iconfont">&#xe613;</i>
+
+    <!-- 公告栏 -->
+    <div class="bulletin-wrapper" @click="showDetail">
+      <span class="bulletin-title"></span><span class="bulletin-text">{{seller.bulletin}}</span>
+      <i class="icon-keyboard_arrow_right"></i>
     </div>
-    <!-- 头部背景模糊部分 -->
+
+    <!-- 背景图片 模糊 -->
     <div class="background">
-      <img :src="seller.avatar" width="100%" height="100%">
+      <img :src="seller.avatar" height="100%" width="100%">
     </div>
-    <!-- 详情页面 模糊背景 -->
-    <div v-show="showDetail" class="detail">
-      <div class="detail-wrapper clearfix">
-        <div class="detail-main">
-          <h1 class="name">{{seller.name}}</h1>
-          <div class="star-wrapper">
-            <star :size="48" :score="seller.score"></star>
-          </div>
-          <div class="title">
-            <div class="line"></div>
-            <div class="text">优惠信息</div>
-            <div class="line"></div>
-          </div>
-          <ul class="supports" v-if="seller.supports">
-            <li class="support-item" v-for="(item, index) in seller.supports" :key="index">
-              <span class="icon" :class="mapClass[seller.supports[index].type]"></span>
-              <span class="text">{{seller.supports[index].description}}</span>
-            </li>
-          </ul>
-          <div class="title">
-            <div class="line"></div>
-            <div class="text">商家公告</div>
-            <div class="line"></div>
-          </div>
-          <div class="bulletin">
-            <p class="text">{{seller.bulletin}}</p>
+
+    <!-- 弹出框 -->
+    <transition name="fade">
+      <div class="detail" v-show="detailShow">
+        <div class="detail-wrapper clearfix">
+          <div class="detail-main">
+            <h1 class="name">{{seller.name}}</h1>
+            <div class="star-wrapper">
+              <star :size="48" :score="seller.score"></star>
+            </div>
+            <div class="title">
+              <div class="line"></div>
+              <div class="text">优惠信息</div>
+              <div class="line"></div>
+            </div>
+            <ul class="supports" v-if="seller.supports">
+              <li class="support-item" v-for="(item, index) in seller.supports" :key="index">
+                <span class="icon" :class="classMap[seller.supports[index].type]"></span>
+                <span class="text">{{seller.supports[index].description}}</span>
+              </li>
+            </ul>
+            <div class="title">
+              <div class="line"></div>
+              <div class="text">商家公告</div>
+              <div class="line"></div>
+            </div>
+            <div class="bulletin">
+              <p class="content">{{seller.bulletin}}</p>
+            </div>
           </div>
         </div>
+        <div class="detail-close" @click="hideDetail">
+          <img src="../../common/images/close.png">
+        </div>
       </div>
-      <div class="detail-close">
-        <i class="iconfont_cha" @click="detailClose">&#xe658;</i>
-      </div>
-    </div>
+    </transition>
   </div>
 </template>
 
 <script>
-import Star from '../star/star'
+import star from '../star/star';
 export default {
   components: {
-    Star
+    star
   },
   props: {
     seller: {
@@ -81,44 +85,43 @@ export default {
   },
   data() {
     return {
-      showDetail: false
-    }
+      detailShow: false
+    };
   },
   created() {
-    // 用在绑定图片（减、折、保、票、特）
-    this.mapClass = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
+    this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
   },
   methods: {
-    detailShow() {
-      this.showDetail = true
+    showDetail() {
+      this.detailShow = true;
     },
-    detailClose() {
-      this.showDetail = false
+    hideDetail() {
+      this.detailShow = false;
     }
   }
-}
+};
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import '../../common/stylus/index'
+@import "../../common/stylus/mixin";
 .header
   position relative
+  overflow hidden
   color #fff
   background rgba(7, 17, 27, 0.5)
-  overflow hidden
+
   .content-wrapper
     position relative
     padding 24px 12px 18px 24px
-    font-size 0
+    font-size 0  // 为了消除空隙
     .avatar
       display inline-block
       vertical-align top
-      margin-right 16px
       img
         border-radius 2px
     .content
       display inline-block
-      font-size 14px
+      margin-left 16px
       .title
         margin 2px 0 8px 0
         .brand
@@ -126,13 +129,12 @@ export default {
           vertical-align top
           width 30px
           height 18px
-          bg-image('img/brand')
+          bg-image('brand')  // 2x,3x图片
           background-size 30px 18px
           background-repeat no-repeat
         .name
           margin-left 6px
           font-size 16px
-          color rgb(255, 255, 255)
           font-weight bold
           line-height 18px
       .description
@@ -142,96 +144,110 @@ export default {
       .supports
         .icon
           display inline-block
-          width 12px
+          vertical-align top
           height 12px
+          width 12px
           margin-right 4px
-          background-size 12px 12px
+          background-size 12px
           background-repeat no-repeat
           &.decrease
-            bg-image('img/decrease_1')
+            bg-image('decrease_1')
           &.discount
-            bg-image('img/discount_1')
+            bg-image('discount_1')
           &.guarantee
-            bg-image('img/guarantee_1')
+            bg-image('guarantee_1')
           &.invoice
-            bg-image('img/invoice_1')
+            bg-image('invoice_1')
           &.special
-            bg-image('img/special_1')
+            bg-image('special_1')
         .text
-          vertical-align top
-          font-size 10px
           line-height 12px
+          font-size 10px
     .support-count
       position absolute
       right 12px
       bottom 14px
       padding 0 8px
       height 24px
-      line-height 24px
+      line-height 12px
       border-radius 14px
       background rgba(0, 0, 0, 0.2)
+      text-align center
       .count
         font-size 10px
-      .iconfont
-        font-size 10px
+      .icon-keyboard_arrow_right
+        margin-left 2px
         line-height 24px
-        margin-left 4px
+        font-size 10px
+
   .bulletin-wrapper
     position relative
     height 28px
+    padding 0 12px 0 12px
     line-height 28px
-    padding 0 22px 0 12px
     white-space nowrap
     overflow hidden
-    text-overflow ellipsis //相当于省略号
+    text-overflow ellipsis
     background rgba(7, 17, 27, 0.2)
-    .bulletin-icon
+    .bulletin-title
       display inline-block
       vertical-align top
+      margin-top 8px
       width 22px
       height 12px
-      bg-image('img/bulletin')
+      bg-image('bulletin')
       background-size 22px 12px
       background-repeat no-repeat
-      margin-top 8px
     .bulletin-text
       vertical-align top
       font-size 10px
       margin 0 4px
-    .iconfont
+    .icon-keyboard_arrow_right
       position absolute
-      font-size 8px
-      right 12px
+      font-size 10px
+      right 10px
+      top 8px
+
   .background
     position absolute
     top 0
     left 0
-    z-index -1
     width 100%
     height 100%
+    z-index -1
     filter blur(10px)
+
   .detail
     position fixed
     z-index 99
     top 0
     left 0
-    height 100%
     width 100%
+    height 100%
     overflow auto
-    background rgba(7, 17, 27, 0.8)
+    background: rgba(7,17,27,.8)
+    transition all 0.5s
+    backdrop-filter blur(10px) // ios支持该属性
+    &.fade-transition
+      opacity 1
+      background rgba(7, 17, 27, 0.8)
+    &.fade-enter, &.fade-leave
+      opacity 0
+      background rgba(7, 17, 27, 0)
     .detail-wrapper
       min-height 100%
       width 100%
       .detail-main
         margin-top 64px
-        padding-bottom 85px
+        padding-bottom 64px
         .name
-          line-height 16px
-          text-align center
           font-size 16px
           font-weight 700
+          line-height 16px
+          text-align center
         .star-wrapper
-          margin-top 18px
+          margin-top 16px
+          padding 2px 0
           text-align center
         .title
           display flex
@@ -251,7 +267,7 @@ export default {
           .support-item
             padding 0 12px
             margin-bottom 12px
-            // font-size 0
+            font-size 0
             &:last-child
               margin-bottom 0
             .icon
@@ -263,15 +279,15 @@ export default {
               background-size 100% 100%
               background-repeat no-repeat
               &.decrease
-                bg-image('img/decrease_1')
+                bg-image("decrease_2")
               &.discount
-                bg-image('img/discount_1')
+                bg-image("discount_2")
               &.guarantee
-                bg-image('img/guarantee_1')
+                bg-image("guarantee_2")
               &.invoice
-                bg-image('img/invoice_1')
+                bg-image("invoice_2")
               &.special
-                bg-image('img/special_1')
+                bg-image("special_2")
             .text
               line-height 16px
               font-size 12px
@@ -284,6 +300,6 @@ export default {
             font-size: 12px
             text-align: justify
     .detail-close
-      position relative
-      margin -64px auto 0 45%
+        position relative
+        margin -64px auto 0 40%
 </style>
